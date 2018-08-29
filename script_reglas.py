@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[16]:
 
 
 from emoji import UNICODE_EMOJI
@@ -15,7 +15,7 @@ import re
 texto='Hola, frank: 😁'
 
 
-# In[12]:
+# In[18]:
 
 
 def is_emoji(s):
@@ -25,7 +25,7 @@ def is_emoji(s):
     return count
 
 
-# In[13]:
+# In[19]:
 
 
 def give_emoji_free_text(text):
@@ -35,7 +35,7 @@ def give_emoji_free_text(text):
     return clean_text
 
 
-# In[14]:
+# In[20]:
 
 
 def procesa_reglas(texto):
@@ -48,9 +48,7 @@ def procesa_reglas(texto):
     texto=re.sub('^[ \t]+|[ \t]+$', '', texto) 
     #print('quitar trailing leading')
     #print(texto)
-    if bool(re.search('t.co', texto)):
-       # print('es twitter')
-        out='twitter-image'
+
     if (bool(re.search('hasta luego', texto))) & (len(out)==0):
        # print('es hasta luego')
         out='hasta luego'
@@ -59,6 +57,9 @@ def procesa_reglas(texto):
         out='like-fb'
     wc=len(str(texto).split(" "))
     cc=len(str(texto))
+    if bool(re.search('t.co', texto)) & (wc==1) :
+       # print('es twitter')
+        out='twitter-image'
     #print('nchar:'+ str(cc))
     #print('wc:'+ str(wc))
     
@@ -81,7 +82,7 @@ def procesa_reglas(texto):
     emojis=is_emoji(texto) #Conteo de emojis
     #print('conteo de emojis: '+ str(emojis))
     
-    if (emojis==cc)  & (len(out)==0):
+    if (emojis==cc) & (cc>0)  & (len(out)==0):
         #print('puros emojis')
         out='emoji'
     
@@ -137,7 +138,7 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[18]:
+# In[21]:
 
 
 procesa_reglas(texto)
