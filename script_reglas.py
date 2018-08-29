@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[16]:
+# In[23]:
 
 
 from emoji import UNICODE_EMOJI
@@ -9,13 +9,13 @@ from unicodedata import normalize
 import re
 
 
-# In[17]:
+# In[29]:
 
 
-texto='Hola, frank: 😁'
+texto='😁'
 
 
-# In[18]:
+# In[30]:
 
 
 def is_emoji(s):
@@ -25,7 +25,7 @@ def is_emoji(s):
     return count
 
 
-# In[19]:
+# In[31]:
 
 
 def give_emoji_free_text(text):
@@ -35,7 +35,13 @@ def give_emoji_free_text(text):
     return clean_text
 
 
-# In[20]:
+# In[34]:
+
+
+len(str(texto))
+
+
+# In[37]:
 
 
 def procesa_reglas(texto):
@@ -69,13 +75,14 @@ def procesa_reglas(texto):
     
     texto=re.sub('[^\w\s]','', texto) #Quitar puntuacion
     #print('quitar punct '+texto)
-    
+
     texto=re.sub('^[ \t]+|[ \t]+$', '', texto) #Otra vez quitar leading y trailing
     #print('quitar leading y trailing '+texto)
     
     #Contar palabras y caracteres otra vez
     wc=len(str(texto).split(" "))
     cc=len(str(texto))
+    
     #print('nchar: '+ str(cc))
     #print('wc: '+ str(wc))
     
@@ -138,8 +145,14 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[21]:
+# In[38]:
 
 
 procesa_reglas(texto)
+
+
+# In[22]:
+
+
+get_ipython().system('jupyter nbconvert --to script script_reglas.ipynb')
 
