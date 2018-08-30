@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[23]:
+# In[1]:
 
 
 from emoji import UNICODE_EMOJI
@@ -9,13 +9,13 @@ from unicodedata import normalize
 import re
 
 
-# In[29]:
+# In[2]:
 
 
 texto='😁'
 
 
-# In[30]:
+# In[3]:
 
 
 def is_emoji(s):
@@ -25,7 +25,7 @@ def is_emoji(s):
     return count
 
 
-# In[31]:
+# In[4]:
 
 
 def give_emoji_free_text(text):
@@ -35,13 +35,7 @@ def give_emoji_free_text(text):
     return clean_text
 
 
-# In[34]:
-
-
-len(str(texto))
-
-
-# In[37]:
+# In[5]:
 
 
 def procesa_reglas(texto):
@@ -62,7 +56,7 @@ def procesa_reglas(texto):
       #  print('es like')
         out='like-fb'
     wc=len(str(texto).split(" "))
-    cc=len(str(texto))
+    cc_1=cc=len(str(texto))
     if bool(re.search('t.co', texto)) & (wc==1) :
        # print('es twitter')
         out='twitter-image'
@@ -89,7 +83,7 @@ def procesa_reglas(texto):
     emojis=is_emoji(texto) #Conteo de emojis
     #print('conteo de emojis: '+ str(emojis))
     
-    if (emojis==cc) & (cc>0)  & (len(out)==0):
+    if (emojis==cc) & (cc_1>0)  & (len(out)==0):
         #print('puros emojis')
         out='emoji'
     
@@ -145,14 +139,14 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[38]:
+# In[6]:
 
 
 procesa_reglas(texto)
 
 
-# In[22]:
+# In[7]:
 
 
-get_ipython().system('jupyter nbconvert --to script script_reglas.ipynb')
+#!jupyter nbconvert --to script script_reglas.ipynb
 
