@@ -9,13 +9,13 @@ from unicodedata import normalize
 import re
 
 
-# In[2]:
-
-
-texto='😁'
-
-
 # In[3]:
+
+
+texto='aborto!!!!'
+
+
+# In[4]:
 
 
 def is_emoji(s):
@@ -25,7 +25,7 @@ def is_emoji(s):
     return count
 
 
-# In[4]:
+# In[5]:
 
 
 def give_emoji_free_text(text):
@@ -35,7 +35,7 @@ def give_emoji_free_text(text):
     return clean_text
 
 
-# In[5]:
+# In[7]:
 
 
 def procesa_reglas(texto):
@@ -48,7 +48,9 @@ def procesa_reglas(texto):
     texto=re.sub('^[ \t]+|[ \t]+$', '', texto) 
     #print('quitar trailing leading')
     #print(texto)
-
+    if (bool(re.search('aborto', texto))) & (len(out)==0):
+       # print('es hasta luego')
+        out='aborto'
     if (bool(re.search('hasta luego', texto))) & (len(out)==0):
        # print('es hasta luego')
         out='hasta luego'
@@ -139,14 +141,14 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[6]:
+# In[8]:
 
 
 procesa_reglas(texto)
 
 
-# In[7]:
+# In[10]:
 
 
-#!jupyter nbconvert --to script script_reglas.ipynb
+get_ipython().system('jupyter nbconvert --to script script_reglas.ipynb')
 
