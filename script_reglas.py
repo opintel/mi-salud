@@ -9,10 +9,10 @@ from unicodedata import normalize
 import re
 
 
-# In[3]:
+# In[11]:
 
 
-texto='aborto!!!!'
+texto='aborto'
 
 
 # In[4]:
@@ -141,13 +141,13 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[8]:
+# In[12]:
 
 
 procesa_reglas(texto)
 
 
-# In[10]:
+# In[13]:
 
 
 get_ipython().system('jupyter nbconvert --to script script_reglas.ipynb')
