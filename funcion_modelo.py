@@ -127,7 +127,7 @@ label_map={0:'otra',
           4: 'emergencia',
           5: 'pregunta',
           6: 'pregunta',
-          7: 'otra_queja',
+          7: 'otra',
           8: 'pregunta'}
 
 

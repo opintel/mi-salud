@@ -9,13 +9,13 @@ from unicodedata import normalize
 import re
 
 
-# In[11]:
+# In[2]:
 
 
-texto='aborto'
+texto='Hola'
 
 
-# In[4]:
+# In[3]:
 
 
 def is_emoji(s):
@@ -25,7 +25,7 @@ def is_emoji(s):
     return count
 
 
-# In[5]:
+# In[4]:
 
 
 def give_emoji_free_text(text):
@@ -35,7 +35,7 @@ def give_emoji_free_text(text):
     return clean_text
 
 
-# In[7]:
+# In[5]:
 
 
 def procesa_reglas(texto):
@@ -141,7 +141,7 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[12]:
+# In[6]:
 
 
 procesa_reglas(texto)
