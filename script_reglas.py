@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[17]:
 
 
 from emoji import UNICODE_EMOJI
@@ -9,13 +9,13 @@ from unicodedata import normalize
 import re
 
 
-# In[2]:
+# In[18]:
 
 
-texto='Hola'
+texto='What is your phone number?'
 
 
-# In[3]:
+# In[19]:
 
 
 def is_emoji(s):
@@ -25,7 +25,7 @@ def is_emoji(s):
     return count
 
 
-# In[4]:
+# In[20]:
 
 
 def give_emoji_free_text(text):
@@ -35,7 +35,7 @@ def give_emoji_free_text(text):
     return clean_text
 
 
-# In[5]:
+# In[21]:
 
 
 def procesa_reglas(texto):
@@ -127,6 +127,9 @@ def procesa_reglas(texto):
     if (bool(re.search('telefono', texto)))& (bool(re.search('numero', texto))) & (wc<10) & (len(out)==0):
         #print('es: informacion (telefono)')
         out='informacion'
+    if (bool(re.search('what ', texto)))& (bool(re.search('number', texto))) & (len(out)==0):
+        #print('es: informacion (telefono)')
+        out='informacion'
     if (bool(re.search('added', texto))) & (len(out)==0):
        # print('es: like (added)')
         out='like-fb'
@@ -141,13 +144,13 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[6]:
+# In[22]:
 
 
 procesa_reglas(texto)
 
 
-# In[13]:
+# In[23]:
 
 
 get_ipython().system('jupyter nbconvert --to script script_reglas.ipynb')

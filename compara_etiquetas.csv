@@ -1,7 +1,7 @@
 categ_final,emergencia,informacion,nacimiento,otra,otra_queja,pregunta,pregunta_busca trabajo,respuesta,All
 cancelar,0,0,1,0,0,0,0,4,5
 emergencia,5,1,0,0,1,0,0,0,7
-informacion,0,42,0,4,0,0,0,2,48
+informacion,0,42,0,0,0,0,0,2,44
 nacimiento,0,0,7,0,0,0,0,0,7
 otra,0,0,0,267,1,0,0,3,271
 otra_queja,0,0,0,0,140,3,1,1,145
@@ -10,4 +10,4 @@ pregunta,0,21,0,2,1,309,3,1,337
 pregunta_busca trabajo,0,0,0,1,0,0,57,0,58
 pregunta_medica,4,3,0,1,0,9,0,1,18
 respuesta,0,2,5,0,0,1,0,63,71
-All,9,69,13,275,143,322,61,82,974
+All,9,69,13,271,143,322,61,82,970
