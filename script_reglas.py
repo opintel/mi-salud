@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[17]:
+# In[155]:
 
 
 from emoji import UNICODE_EMOJI
@@ -9,13 +9,13 @@ from unicodedata import normalize
 import re
 
 
-# In[18]:
+# In[183]:
 
 
-texto='What is your phone number?'
+texto='a'
 
 
-# In[19]:
+# In[184]:
 
 
 def is_emoji(s):
@@ -25,7 +25,7 @@ def is_emoji(s):
     return count
 
 
-# In[20]:
+# In[185]:
 
 
 def give_emoji_free_text(text):
@@ -35,7 +35,7 @@ def give_emoji_free_text(text):
     return clean_text
 
 
-# In[21]:
+# In[187]:
 
 
 def procesa_reglas(texto):
@@ -88,7 +88,9 @@ def procesa_reglas(texto):
     if (emojis==cc) & (cc_1>0)  & (len(out)==0):
         #print('puros emojis')
         out='emoji'
-    
+    if (cc_1==1)  & (len(out)==0) &  bool(re.search('[a-z]|[A-Z]', texto)):
+       # print('es twitter')
+        out='otra'
     texto=give_emoji_free_text(texto)#Elimina emojis
     #print('quitar emojis:'+ texto)
     
@@ -106,30 +108,33 @@ def procesa_reglas(texto):
     if (cc==2) & (bool(re.search('no|noo|nno', texto))) & (len(out)==0):
         #print('es: no')
         out='no'
+    if (wc==1) & (bool(re.search('salu', texto))) & (len(out)==0) & ~(bool(re.search('mi', texto))) & ~(bool(re.search('secret', texto))):
+       # print('es: gracias')
+        out='hola'
     if (wc==1) & (bool(re.search('gracias|graicas|gracia|graciad|graciaa', texto))) & (len(out)==0):
        # print('es: gracias')
         out='gracias'
-    if (wc==1) & (bool(re.search('ok|ook|okk', texto))) & (len(out)==0):
+    if (wc<=3) & (bool(re.search('ok|ook|okk', texto))) & (len(out)==0):
         #print('es: ok')
         out='ok'
-    if (wc<=2) & (bool(re.search('hola|holaa|hhola|hoola|holi', texto))) & (len(out)==0):
+    if (wc<=2) & (bool(re.search('hola|holaa|hhola|hoola|holi|bonjour|ola', texto))) & (len(out)==0):
         #print('es: hola')
         out='hola'
-    if (wc<=4) & (bool(re.search('hola|buenad tardes|ola|buena tarde|buen dia|buena noche|buenas tardea|buenas tardes|buenas noches|buenos dias', texto))) & (len(out)==0):
+    if (wc<=4) & (bool(re.search('ola|bien dia|que tal|bn dia|hola|buenad tardes|buena tarde|buen dia|buena noche|buenas tardea|buenas tardes|buenas noches|buenos dias', texto))) & (len(out)==0):
             #print('es: hola')
             out='hola'
-    if (wc<=5) & (bool(re.search('gracias|graicas|gracia|graciad|graciaa', texto))) & (len(out)==0):
+    if (wc<=5) & (bool(re.search('gracias|graicas|gracia|graciad|graciaa|gracaias', texto))) & (len(out)==0):
         #print('es: gracias')
         out='gracias'
     if (bool(re.search('horario', texto))) & (bool(re.search('atencion', texto))) & (len(out)==0):
         #print('es: informacion (horario atencion)')
-        out='informacion'
+        out='pregunta'
     if (bool(re.search('telefono', texto)))& (bool(re.search('numero', texto))) & (wc<10) & (len(out)==0):
         #print('es: informacion (telefono)')
-        out='informacion'
+        out='pregunta'
     if (bool(re.search('what ', texto)))& (bool(re.search('number', texto))) & (len(out)==0):
         #print('es: informacion (telefono)')
-        out='informacion'
+        out='pregunta'
     if (bool(re.search('added', texto))) & (len(out)==0):
        # print('es: like (added)')
         out='like-fb'
@@ -144,13 +149,13 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[22]:
+# In[188]:
 
 
 procesa_reglas(texto)
 
 
-# In[23]:
+# In[189]:
 
 
 get_ipython().system('jupyter nbconvert --to script script_reglas.ipynb')
