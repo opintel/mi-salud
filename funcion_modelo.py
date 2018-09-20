@@ -23,6 +23,29 @@ pca=joblib.load('./modelo/pca.pkl')  #2
 clasificador=joblib.load('./modelo/modelo.pkl') # 3
 
 
+# Cargamos los pkls que se generaron en entrenamiento modelo y les aplicamos las mismas funciones al texto nuevo para que entre igual que el texto con el que se entrenó. 
+# 
+# En la función de producción de modelo construimos la tabla de features en el mismo orden en el que entró al entrenamiento: 33 factores, word count y hora. La hora del nuevo mensaje saldrá de una petición GET al api de rapidpro. Se busca el último mensaje y extra su hora (en entero del 0 al 24). 
+# 
+# Se saca la probabilidad predicha de cada clase y se suman las probabilidades que van juntas. (Se agregaron categorías para ayudar a la clasificación de mensajes. Pregunta médica y pregunta busca trabajo son ambas preguntas, pero contienen mensajes muy diferentes). 
+# 
+# #### Se agrega: 
+# * Pregunta:
+#  + Búsqueda de trabajo
+#  + Preguntas médicas
+#  + Otras Preguntas  
+# * Otra:
+#  + Quejas
+#  + Otras
+#  
+# #### Índice de concentración
+# 
+# El modelo calcula una predicción para todos los mensajes. Sin embargo, habrá veces que dos o más clases tienen alta probabilidad. Para controlar ese caso, se calcula un índice de concentración. Entre más alto, más concentrada está la probabilidad en una sola clase. Si el índice está por debajo de 4,000 el modelo no asignará una clase. El modelo asignará una clase a aproximadamente el 80% de los mensajes enviados.
+# 
+# #### Flag de emergencias
+# 
+# Los mensajes que sean emergencias y el modelo no prediga correctamente, son los errores más costosos. Por ello, si la probabilidad de emergencia es mayor a 1%, se le asignará la clase cuya probabildad sea la máxima. Sin embargo, se 
+
 # In[63]:
 
 
@@ -146,7 +169,7 @@ label_map={0:'emergencia', 1:'informacion',
            4:'pregunta', 5:'respuesta'}
 
 
-# In[91]:
+# In[93]:
 
 
 #ID CONTACTO
@@ -154,7 +177,7 @@ contact_uuid='fb82e199-ac49-41cd-a269-1654f29e180b'
 #TEXTO DEL MENSAJE
 texto= "22.11.1997"
 # TOKEN DEL API
-token="Token 0032fe79dbddceae3f4a86e86a726e16b88ec88e"
+token="Token [inserta aqui]"
 
 predice_modelo(contact_uuid, texto, token)
 
@@ -163,7 +186,7 @@ predice_modelo(contact_uuid, texto, token)
 
 
 
-# In[48]:
+# In[94]:
 
 
 get_ipython().system('jupyter nbconvert --to script funcion_modelo.ipynb')
