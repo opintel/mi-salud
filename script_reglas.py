@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[155]:
+# In[1]:
 
 
 from emoji import UNICODE_EMOJI
@@ -9,13 +9,13 @@ from unicodedata import normalize
 import re
 
 
-# In[183]:
+# In[2]:
 
 
 texto='a'
 
 
-# In[184]:
+# In[3]:
 
 
 def is_emoji(s):
@@ -25,7 +25,7 @@ def is_emoji(s):
     return count
 
 
-# In[185]:
+# In[4]:
 
 
 def give_emoji_free_text(text):
@@ -35,7 +35,7 @@ def give_emoji_free_text(text):
     return clean_text
 
 
-# In[187]:
+# In[5]:
 
 
 def procesa_reglas(texto):
@@ -149,13 +149,13 @@ def procesa_reglas(texto):
     return(out)
 
 
-# In[188]:
+# In[6]:
 
 
 procesa_reglas(texto)
 
 
-# In[189]:
+# In[7]:
 
 
 get_ipython().system('jupyter nbconvert --to script script_reglas.ipynb')
