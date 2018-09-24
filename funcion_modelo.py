@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[7]:
+# In[1]:
 
 
 import requests
@@ -15,7 +15,7 @@ from nltk.stem.snowball import SnowballStemmer
 import nltk
 
 
-# In[8]:
+# In[2]:
 
 
 features_stem_tfidf=joblib.load('./modelo/mat_tfidf.pkl') #1
@@ -38,6 +38,8 @@ clasificador=joblib.load('./modelo/modelo.pkl') # 3
 #  + Quejas
 #  + Otras
 #  
+# **Nota: la categoría "cancelar" se colapsó con la de respuestas. Esta categoría tenía sólo 7 mensajes muy dinstintos entre sí, por lo que era imposible hacer una predicción efectiva**
+#  
 # #### Índice de concentración
 # 
 # El modelo calcula una predicción para todos los mensajes. Sin embargo, habrá veces que dos o más clases tienen alta probabilidad. Para controlar ese caso, se calcula un índice de concentración. Entre más alto, más concentrada está la probabilidad en una sola clase. Si el índice está por debajo de 4767.621 el modelo no asignará una clase. El modelo asignará una clase a aproximadamente el 80% de los mensajes enviados. Esto resulta en una precisión fuera de muestra de 80% de los casos.
@@ -46,18 +48,18 @@ clasificador=joblib.load('./modelo/modelo.pkl') # 3
 # 
 # Los mensajes que sean emergencias y el modelo no prediga correctamente, son los errores más costosos. Por ello, si la probabilidad de emergencia es mayor a 1%, se le asignará la clase cuya probabildad sea la máxima. Sin embargo, se agregará un flag que indicará que el mensaje tiene una probabilidad alta de ser emergencia. Este flag se le asigna al ~8% de los mensajes y logra captar ~60% de las emergencias
 
-# In[9]:
+# In[3]:
 
 
 label_map={0:'emergencia',
            1:'informacion',
-            2:'nacimiento',
-            3:'otra',
-            4:'pregunta',
-            5:'respuesta'}
+           2:'nacimiento',
+           3:'otra',
+           4:'pregunta',
+           5:'respuesta'}
 
 
-# In[10]:
+# In[4]:
 
 
 def procesa_texto(texto):
@@ -186,7 +188,7 @@ def predice_modelo(contact_uuid, texto, token):
 # * No_se_puede_asignar_etiqueta -> webhook autoetiquetado
 # * No_se_puede_asignar_etiqueta-FLAG -> Mensaje precautorio -> webhook autoetiquetado
 
-# In[11]:
+# In[5]:
 
 
 
@@ -195,7 +197,7 @@ def predice_modelo(contact_uuid, texto, token):
 minimo_conc=4767.621
 
 
-# In[ ]:
+# In[6]:
 
 
 #ID CONTACTO
@@ -212,7 +214,7 @@ predice_modelo(contact_uuid, texto, token)
 
 
 
-# In[3]:
+# In[7]:
 
 
 get_ipython().system('jupyter nbconvert --to script funcion_modelo.ipynb')
