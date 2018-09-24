@@ -36,7 +36,8 @@ def load_pkl():
         features_stem_tfidf = joblib.load(features_stem_path) #1
         pca = joblib.load(pca_path) #2
         clasificador = joblib.load(clasificador_path) # 3
-    except:
+    except Exception as error:
+        raise(error)
         features_stem_tfidf = joblib.load('/static/modelo/mat_tfidf.pkl') #1
         pca = joblib.load('/static/modelo/pca.pkl') #2
         clasificador = joblib.load('/static/modelo/modelo.pkl') # 3
