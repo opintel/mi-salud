@@ -32,9 +32,9 @@ def load_pkl():
     # pca_path = finders.find('/rpml/static/modelo/pca.pkl')
     # clasificador_path = finders.find('/rpml/static/modelo/modelo.pkl')
 
-    features_stem_tfidf = joblib.load('/rpml/static/modelo/mat_tfidf.pkl') #1
-    pca = joblib.load('/rpml/static/modelo/pca.pkl') #2
-    clasificador = joblib.load('/rpml/static/modelo/modelo.pkl') # 3
+    features_stem_tfidf = joblib.load('/modelo/mat_tfidf.pkl') #1
+    pca = joblib.load('/modelo/pca.pkl') #2
+    clasificador = joblib.load('/modelo/modelo.pkl') # 3
 
     # try:
     #     from django.contrib.staticfiles import finders
