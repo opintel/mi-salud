@@ -1,0 +1,27 @@
+from setuptools import setup, find_packages
+import rpml
+
+setup(
+    name='rpml',
+    version='1.0',
+    description='Modelo predictivo para etiquetas de mensajes de RapidPro',
+    url='https://github.com/opintel/mi-salud',
+    author='Jose Antonio Sanchez',
+    author_email='j.sanchez@opianalytics.com',
+    keywords='ml, rapidpro',
+    install_requires=[
+        'nltk==3.2.4',
+        'scikit-learn==0.19.2',
+        'sklearn==0.0',
+        'numpy==1.13.3',
+        'scipy==1.1.0',
+        'xgboost==0.80'
+    ],
+    include_package_data=True,
+    packages=find_packages(),
+    data_files=[('rpml', [
+        'rpml/modelo/mat_tfidf.pkl',
+        'rpml/modelo/modelo.pkl',
+        'rpml/modelo/pca.pkl',
+    ])]
+)
