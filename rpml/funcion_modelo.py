@@ -30,7 +30,7 @@ def load_pkl():
         from django.contrib.staticfiles import finders
         from django.templatetags.static import static
 
-        features_stem_path = finders.find('static/modelo/mat_tfidf.pkl')
+        features_stem_path = finders.find('modelo/mat_tfidf.pkl')
         pca_path = finders.find('modelo/pca.pkl')
         clasificador_path = finders.find('modelo/modelo.pkl')
         searched = finders.searched_locations
