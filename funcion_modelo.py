@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[14]:
+# In[7]:
 
 
 import requests
@@ -15,7 +15,7 @@ from nltk.stem.snowball import SnowballStemmer
 import nltk
 
 
-# In[15]:
+# In[8]:
 
 
 features_stem_tfidf=joblib.load('./modelo/mat_tfidf.pkl') #1
@@ -40,13 +40,24 @@ clasificador=joblib.load('./modelo/modelo.pkl') # 3
 #  
 # #### Índice de concentración
 # 
-# El modelo calcula una predicción para todos los mensajes. Sin embargo, habrá veces que dos o más clases tienen alta probabilidad. Para controlar ese caso, se calcula un índice de concentración. Entre más alto, más concentrada está la probabilidad en una sola clase. Si el índice está por debajo de 4,000 el modelo no asignará una clase. El modelo asignará una clase a aproximadamente el 80% de los mensajes enviados.
+# El modelo calcula una predicción para todos los mensajes. Sin embargo, habrá veces que dos o más clases tienen alta probabilidad. Para controlar ese caso, se calcula un índice de concentración. Entre más alto, más concentrada está la probabilidad en una sola clase. Si el índice está por debajo de 4767.621 el modelo no asignará una clase. El modelo asignará una clase a aproximadamente el 80% de los mensajes enviados. Esto resulta en una precisión fuera de muestra de 80% de los casos.
 # 
 # #### Flag de emergencias
 # 
-# Los mensajes que sean emergencias y el modelo no prediga correctamente, son los errores más costosos. Por ello, si la probabilidad de emergencia es mayor a 1%, se le asignará la clase cuya probabildad sea la máxima. Sin embargo, se 
+# Los mensajes que sean emergencias y el modelo no prediga correctamente, son los errores más costosos. Por ello, si la probabilidad de emergencia es mayor a 1%, se le asignará la clase cuya probabildad sea la máxima. Sin embargo, se agregará un flag que indicará que el mensaje tiene una probabilidad alta de ser emergencia. Este flag se le asigna al ~8% de los mensajes y logra captar ~60% de las emergencias
 
-# In[63]:
+# In[9]:
+
+
+label_map={0:'emergencia',
+           1:'informacion',
+            2:'nacimiento',
+            3:'otra',
+            4:'pregunta',
+            5:'respuesta'}
+
+
+# In[10]:
 
 
 def procesa_texto(texto):
@@ -145,7 +156,7 @@ def predice_modelo(contact_uuid, texto, token):
     
     if conc<minimo_conc:
         pred='No_se_puede_asignar_etiqueta'
-    if proba[0]>0.01:
+    if proba[0]>0.030110899:
         pred=pred+'-FLAG'
     
     out={'pred':pred,
@@ -155,29 +166,44 @@ def predice_modelo(contact_uuid, texto, token):
     return out
 
 
-# In[64]:
+# Posibles respuestas de la función y acciones esperadas: 
+# 
+# * Información -> Flujo de información
+# * Nacimiento -> Flujo de nacimiento
+# * Respuesta -> Flujo de respuesta
+# * Otra -> Flujo de otro
+# 
+# Si la probabilidad de emergencia es mayor a 3%:
+# 
+# * Emergencia-FLAG -> Flujo de emergencia
+# * Información-FLAG -> Mensaje precautorio -> Flujo de información
+# * Nacimiento-FLAG -> Mensaje precautorio -> Flujo de nacimiento
+# * Respuesta-FLAG -> Mensaje precautorio -> Flujo de respuesta
+# * Otra-FLAG -> Mensaje precautorio -> Flujo de otra
+# 
+# Si el índice de concentración está abajo de 4767.621:
+# 
+# * No_se_puede_asignar_etiqueta -> webhook autoetiquetado
+# * No_se_puede_asignar_etiqueta-FLAG -> Mensaje precautorio -> webhook autoetiquetado
+
+# In[11]:
 
 
 
 ##THRESHOLD DE CONCENTRACIÓN. ABAJO DE ESTO NO SE PUEDE PREDECIR
 
-minimo_conc=4000
-
-##ETIQUETAS DE PREDICCIONES (NO CAMBIAR)
-label_map={0:'emergencia', 1:'informacion',
-           2:'nacimiento', 3:'otra',
-           4:'pregunta', 5:'respuesta'}
+minimo_conc=4767.621
 
 
-# In[93]:
+# In[ ]:
 
 
 #ID CONTACTO
-contact_uuid='fb82e199-ac49-41cd-a269-1654f29e180b'
+contact_uuid='e128652a-3a66-4fc2-98b9-36964ca1cd9b'
 #TEXTO DEL MENSAJE
-texto= "22.11.1997"
+texto= "Sólo me dijeron que fuera sí necesitaba más medicamentos o me sentía mal"
 # TOKEN DEL API
-token="Token [inserta aqui]"
+token="Token []"
 
 predice_modelo(contact_uuid, texto, token)
 
@@ -186,7 +212,7 @@ predice_modelo(contact_uuid, texto, token)
 
 
 
-# In[94]:
+# In[3]:
 
 
 get_ipython().system('jupyter nbconvert --to script funcion_modelo.ipynb')
