@@ -25,7 +25,7 @@ clasificador=joblib.load('./modelo/modelo.pkl') # 3
 
 # Cargamos los pkls que se generaron en entrenamiento modelo y les aplicamos las mismas funciones al texto nuevo para que entre igual que el texto con el que se entrenó. 
 # 
-# En la función de producción de modelo construimos la tabla de features en el mismo orden en el que entró al entrenamiento: 33 factores, word count y hora. La hora del nuevo mensaje saldrá de una petición GET al api de rapidpro. Se busca el último mensaje y extra su hora (en entero del 0 al 24). 
+# En la función de predicción de modelo construimos la tabla de features en el mismo orden en el que entró al entrenamiento: 33 factores, word count y hora. La hora del nuevo mensaje saldrá de una petición GET al api de rapidpro. Se busca el último mensaje y extra su hora (en entero del 0 al 24). 
 # 
 # Se saca la probabilidad predicha de cada clase y se suman las probabilidades que van juntas. (Se agregaron categorías para ayudar a la clasificación de mensajes. Pregunta médica y pregunta busca trabajo son ambas preguntas, pero contienen mensajes muy diferentes). 
 # 
@@ -214,7 +214,7 @@ predice_modelo(contact_uuid, texto, token)
 
 
 
-# In[7]:
+# In[8]:
 
 
 get_ipython().system('jupyter nbconvert --to script funcion_modelo.ipynb')
