@@ -20,8 +20,8 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     data_files=[('rpml', [
-        'rpml/modelo/mat_tfidf.pkl',
-        'rpml/modelo/modelo.pkl',
-        'rpml/modelo/pca.pkl',
+        'rpml/static/modelo/mat_tfidf.pkl',
+        'rpml/static/modelo/modelo.pkl',
+        'rpml/static/modelo/pca.pkl',
     ])]
 )

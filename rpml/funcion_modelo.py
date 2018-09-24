@@ -26,9 +26,26 @@ def load_pkl():
     Funcion que carga los pkls
     generados en el entrenamiento del modelo
     """
-    features_stem_tfidf = joblib.load('rpml/static/modelo/mat_tfidf.pkl') #1
-    pca = joblib.load('rpml/static/modelo/pca.pkl') #2
-    clasificador = joblib.load('rpml/static/modelo/modelo.pkl') # 3
+    from django.contrib.staticfiles import finders
+
+    features_stem_path = finders.find('/static/modelo/mat_tfidf.pkl')
+    pca_path = finders.find('/static/modelo/pca.pkl')
+    clasificador_path = finders.find('/static/modelo/modelo.pkl')
+
+    features_stem_tfidf = joblib.load('/static/modelo/mat_tfidf.pkl') #1
+    pca = joblib.load('static/modelo/pca.pkl') #2
+    clasificador = joblib.load('static/modelo/modelo.pkl') # 3
+
+    # try:
+    #     from django.contrib.staticfiles import finders
+
+    #     features_stem_tfidf = joblib.load('/static/modelo/mat_tfidf.pkl') #1
+    #     pca = joblib.load('static/modelo/pca.pkl') #2
+    #     clasificador = joblib.load('static/modelo/modelo.pkl') # 3
+    # except:
+    #     features_stem_tfidf = joblib.load('/static/modelo/mat_tfidf.pkl') #1
+    #     pca = joblib.load('static/modelo/pca.pkl') #2
+    #     clasificador = joblib.load('static/modelo/modelo.pkl') # 3
 
     return features_stem_tfidf, pca, clasificador
 
