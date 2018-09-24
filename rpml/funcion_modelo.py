@@ -80,7 +80,7 @@ def tokenize_and_stem(text):
     return stems
 
 
-def predice_modelo(contact_uuid, texto, token, minimo_conc):
+def predice_modelo(contact_uuid, texto, token, minimo_conc, pre_categoria, hora_mensaje):
     """
     Función de producción de modelo. Se construye la tabla de features
     en el mismo orden en el que entró al entrenamiento: 33 factores, word count y hora.
@@ -99,16 +99,18 @@ def predice_modelo(contact_uuid, texto, token, minimo_conc):
     features_stem_tfidf, pca, clasificador = load_pkl()
 
     # La hora del nuevo mensaje se obtiene de una petición GET al api de rapidpro
-    response = requests.get(
-        "http://rapidpro.datos.gob.mx/api/v2/runs.json",
-        headers={"Authorization": token},
-        params={"contact": contact_uuid}
-    )
+    # response = requests.get(
+    #     "http://rapidpro.datos.gob.mx/api/v2/runs.json",
+    #     headers={"Authorization": token},
+    #     params={"contact": contact_uuid}
+    # )
 
-    response = json.loads(response.text)
-    hora = response['results'][0]['created_on']
+    # response = json.loads(response.text)
+    # hora = response['results'][0]['created_on']
     # Se busca el último mensaje y extra su hora (en entero del 0 al 24).
-    hora = int(hora[11:13])
+    # hora = int(hora[11:13])
+
+    hora = hora_mensaje
 
     # Aplicamos las mismas funciones al texto nuevo
     texto, wc  = procesa_texto(texto)
@@ -124,35 +126,48 @@ def predice_modelo(contact_uuid, texto, token, minimo_conc):
     features = concatenate((features, wc), axis=1)
     features = concatenate((features, hora), axis=1)
 
-    proba = clasificador.predict_proba(features)
-    proba_orig = proba
+    if pre_categoria == 'pregunta':
+        pred = pre_categoria
+        proba = array([
+            0, # Emergencia
+            0, # Informacion
+            0, # Nacimiento
+            0, # Otra
+            0, # Pregunta
+            0
+        ])
+        max_proba = 0
+        conc = 0
+    else:
+        proba = clasificador.predict_proba(features)
+        proba_orig = proba
 
-    # Se saca la probabilidad predicha de cada clase y se suman las probabilidades que van juntas.
-    proba = array([
-        proba[0][0], #'emergencia'
-        proba[0][1], #Informacion
-        proba[0][2], #Nacimiento
-        proba[0][3] + proba[0][4], #otra
-        proba[0][5] + proba[0][6] + proba[0][7], #Pregunta
-        proba[0][8]
-    ]) #Respuesta
+        # Se saca la probabilidad predicha de cada clase y se suman las probabilidades que van juntas.
+        proba = array([
+            proba[0][0], # Emergencia
+            proba[0][1], # Informacion
+            proba[0][2], # Nacimiento
+            proba[0][3] + proba[0][4], # Otra
+            proba[0][5] + proba[0][6] + proba[0][7], # Pregunta
+            proba[0][8]
+        ])
 
-    pred = proba.argmax()
+        pred = proba.argmax()
 
-    # Se calcula un índice de concentración para desempate de categorias
-    conc = proba * 100
-    conc = conc * conc
-    conc = conc.sum()
+        # Se calcula un índice de concentración para desempate de categorias
+        conc = proba * 100
+        conc = conc * conc
+        conc = conc.sum()
 
-    # Entre más alto, más concentrada está la probabilidad en una sola clase.
-    pred = proba.argmax()
-    max_proba = proba.max()
+        # Entre más alto, más concentrada está la probabilidad en una sola clase.
+        pred = proba.argmax()
+        max_proba = proba.max()
 
-    pred = str(vectorize(label_map.get)(pred))
+        pred = str(vectorize(label_map.get)(pred))
 
-    # Si el índice está por debajo de 4,000 el modelo no asignará una clase.
-    if conc < minimo_conc:
-        pred = 'No_se_puede_asignar_etiqueta'
+        # Si el índice está por debajo de 4,000 el modelo no asignará una clase.
+        if conc < minimo_conc:
+            pred = 'No_se_puede_asignar_etiqueta'
 
     # Si la probabilidad de emergencia es mayor a 1%, se le asignará la clase cuya probabildad sea la máxima. 
     if proba[0] > 0.01:
@@ -160,9 +175,9 @@ def predice_modelo(contact_uuid, texto, token, minimo_conc):
 
     out = {
         'pred':pred,
-        'probabilidad_maxima':max_proba,
-        'indice_seguridad':conc, 
-        'proba':proba
+        'probabilidad_maxima': max_proba,
+        'indice_seguridad': conc,
+        'proba': proba
     }
 
     return out
@@ -170,6 +185,7 @@ def predice_modelo(contact_uuid, texto, token, minimo_conc):
 
 if __name__ == "__main__":
     import os
+    from datetime import datetime
 
     #ID CONTACTO
     contact_uuid='fb82e199-ac49-41cd-a269-1654f29e180b'
@@ -179,4 +195,5 @@ if __name__ == "__main__":
     token="Token {}".format(os.environ.get('RP_TOKEN'))
     minimo_conc = 4000
 
-    predice_modelo(contact_uuid, texto, token, minimo_conc)
+    resultado = predice_modelo(contact_uuid, texto, token, minimo_conc, 'pregunta', datetime.now().hour)
+    print(resultado)
