@@ -28,10 +28,12 @@ def load_pkl():
     """
     try:
         from django.contrib.staticfiles import finders
+        from django.templatetags.static import static
 
         features_stem_path = finders.find('static/modelo/mat_tfidf.pkl')
         pca_path = finders.find('modelo/pca.pkl')
         clasificador_path = finders.find('modelo/modelo.pkl')
+        searched = finders.searched_locations
 
         features_stem_tfidf = joblib.load(features_stem_path) #1
         pca = joblib.load(pca_path) #2
