@@ -184,8 +184,8 @@ def predice_modelo(contact_uuid, texto, token, minimo_conc, pre_categoria, hora_
         if conc < minimo_conc:
             pred = 'No_se_puede_asignar_etiqueta'
 
-    # Si la probabilidad de emergencia es mayor a 1%, se le asignará la clase cuya probabildad sea la máxima. 
-    if proba[0] > 0.01:
+    # Si la probabilidad de emergencia es mayor a 3%, se le asignará la clase cuya probabildad sea la máxima, como normalmente. Sin embargo, se le agrega un flag de emergencia. 
+    if proba[0] > 0.030110899:
         pred = pred + '-FLAG'
 
     out = {
