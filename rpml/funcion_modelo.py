@@ -26,9 +26,9 @@ def load_pkl():
     Funcion que carga los pkls
     generados en el entrenamiento del modelo
     """
-    features_stem_tfidf = joblib.load('rpml/modelo/mat_tfidf.pkl') #1
-    pca = joblib.load('rpml/modelo/pca.pkl') #2
-    clasificador = joblib.load('rpml/modelo/modelo.pkl') # 3
+    features_stem_tfidf = joblib.load('rpml/static/modelo/mat_tfidf.pkl') #1
+    pca = joblib.load('rpml/static/modelo/pca.pkl') #2
+    clasificador = joblib.load('rpml/static/modelo/modelo.pkl') # 3
 
     return features_stem_tfidf, pca, clasificador
 
