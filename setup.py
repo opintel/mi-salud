@@ -15,7 +15,10 @@ setup(
         'sklearn==0.0',
         'numpy==1.13.3',
         'scipy==1.1.0',
-        'xgboost==0.80'
+        'xgboost==0.80',
+        'Django==2.1',
+        'emoji==0.5.0',
+        'requests==2.19.1'
     ],
     include_package_data=True,
     packages=find_packages(),
