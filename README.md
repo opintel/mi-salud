@@ -79,6 +79,7 @@ Es necesario tener la tabla que sale del webhook de autoetiquetado, con por lo m
 
 
  **Salida:** 
+ 
     + Método que transforma mensajes a un vector numérico de conteo de palabras: **mat_tfidf.pkl**
     + Método que reduce a 33 dimensiones el vector de conteo de palabras: **pca.pkl**
     + Modelo entrenado: **modelo.pkl**
