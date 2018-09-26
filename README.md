@@ -76,6 +76,8 @@ Es necesario tener la tabla que sale del webhook de autoetiquetado, con por lo m
 | 18  |  Mi bebe |  nacimiento |
 |...|...|...|
 |int|str|str|
+
+
  **Salida:** 
     + Método que transforma mensajes a un vector numérico de conteo de palabras: **mat_tfidf.pkl**
     + Método que reduce a 33 dimensiones el vector de conteo de palabras: **pca.pkl**
